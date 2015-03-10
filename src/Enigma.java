@@ -1,8 +1,5 @@
 // TODO: put your file header here
 
-//Kyles comments
-//kyles got a big black dick
-//ninininininini
 import java.util.*;
 
 /**
@@ -235,9 +232,28 @@ public class Enigma {
 	 */
 	public static char encode( int [][] rotors, int [] reflector, char input ) {
 
-		// TODO left to the student
-
-		return 0;
+		//Converts char to numerical value
+		int index = (int)input-(int)'A';
+		
+		int numRotors = rotors.length;
+		//Runs through rotor(s) forwards
+		for (int i=0; i<numRotors; i++){
+			index = rotors[i][index];
+		}
+		
+		//Runs through reflector
+		index = reflector[index];
+		
+		//Runs through rotor(s) backwards
+		for (int i=numRotors; i>0; i--){
+			for (int j=0; j<rotors[i].length; j++){
+				if (index==rotors[i][j]){
+					index = j;
+				}
+			}
+				
+		}
+		return (char)(index + (int)'A');
 
 	}
 
