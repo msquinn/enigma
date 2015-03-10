@@ -196,10 +196,16 @@ public class Enigma {
 	 * @return An array containing the notch positions for each selected rotor.
 	 */
 	public static int [][] getRotorNotches( int[] rotorIndices ) {
+		int[][] rotorTemp = new int[rotorIndices.length][];
+		
+		for(int i=0; i<rotorIndices.length; i++){
+			rotorTemp[i] = new int[RotorConstants.NOTCHES[rotorIndices[i]].length]; 
+			for(int j=0; j<RotorConstants.NOTCHES[rotorIndices[i]].length; j++){
+				rotorTemp[i][j] = RotorConstants.NOTCHES[rotorIndices[i]][j];
+			}
+		}
 
-		// TODO left to the student
-
-		return null;
+		return rotorTemp;
 	}
 
 	/**
