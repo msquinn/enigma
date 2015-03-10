@@ -203,7 +203,7 @@ System.out.println(convertRotor(message));
 		char [] array = rotorText.toCharArray();
 		int [] convertRotor = new int [length];
 		for(int i=0; i<length; i++){
-		convertRotor[i] = (int)array[i];
+		convertRotor[i] = array[i];
 		}
 		
 		// TODO left to the student
