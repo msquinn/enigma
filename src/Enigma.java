@@ -38,20 +38,20 @@ public class Enigma {
 		 * This is also the place where you should declare and use 
 		 * the "Suggested Data Structures" from the P2 Specifications Page.
 		 */
-boolean runProgram = true;		
-System.out.println("Willkommen auf der Enigma-Maschine");
-Scanner input = new Scanner(System.in);
-System.out.println("Please enter a Rotor Configuration."+
-		"\nThis must be a list of numbers in the range from 0 to 8, separated by spaces."+
-		"\nNote that rotor 0 is the identity rotor.");
-System.out.println("Enter lines of text to be encoded:");
-System.out.println("Contents of reflector"+ 
-Arrays.toString(convertRotor(RotorConstants.REFLECTOR)));
-while(runProgram = true){
+		boolean runProgram = true;		
+		System.out.println("Willkommen auf der Enigma-Maschine");
+		Scanner input = new Scanner(System.in);
+		System.out.println("Please enter a Rotor Configuration."+
+				"\nThis must be a list of numbers in the range from 0 to 8, separated by spaces."+
+				"\nNote that rotor 0 is the identity rotor.");
+		System.out.println("Enter lines of text to be encoded:");
+		System.out.println("Contents of reflector"+ 
+				Arrays.toString(convertRotor(RotorConstants.REFLECTOR)));
+		while(runProgram = true){
 
-	String message = input.nextLine().toUpperCase();
-	System.out.println("Encoded result: "+message);
-}
+			String message = input.nextLine().toUpperCase();
+			System.out.println("Encoded result: "+message);
+		}
 
 
 		/* 
@@ -72,9 +72,13 @@ while(runProgram = true){
 	 * @param rotor The rotor that must be rotated (or shifted).
 	 */
 	public static void rotate( int [] rotor ) {
-		
-		// TODO left to the student
 
+		//Advances rotor
+		int firstElement = rotor[0];
+		for (int i=0; i<rotor.length-1;i++){
+			rotor[i] = rotor[i+1];
+		}
+		rotor[rotor.length-1] = firstElement;
 	}
 
 	/**
@@ -104,14 +108,38 @@ while(runProgram = true){
 	 * @return Array of rotor index values.
 	 */
 	public static int [] parseRotorIndices( String rotorIndicesLine ) {
+		//Checks if user entered anything
+		if(rotorIndicesLine.length() < 1){
+			System.out.println("You must specify at least one rotor.");
+			System.exit(-1);
+		}
 
-		// TODO left to the student
-		
-		// CAUTION: Do not hard code values, we can (and will) change the
-		// RotorConstants class. So, you must use those constant names
-		// and not the values themselves to ensure your code will work
-		// with different versions of those constants.
-		return null;
+		String[] rotorsString = rotorIndicesLine.split(" ");
+		int[] rotors = new int[rotorsString.length];
+
+		int numRotors = RotorConstants.ROTORS.length-1; //number of rotors
+
+		//Checks if user enter a rotor in the corect range
+		for(int i=0; i<rotorsString.length; i++){
+			rotors[i] = Integer.parseInt(rotorsString[i]);
+			if(rotors[i] > numRotors || rotors[i] < 0){
+				System.out.println("Invalid rotor. You must enter an integer "
+						+ "between 0 and " + numRotors);
+				System.exit(-1);
+			}
+		}
+
+		//Checks for duplicates
+		for(int i=0; i<rotors.length; i++){
+			int temp = rotors[i];
+			for(int j=i+1; j<rotors.length; j++){
+				if(rotors[j] == temp){
+					System.out.println("You cannot use the same rotor twice.");
+					System.exit(-1);
+				}
+			}
+		}
+		return rotors;
 	}
 
 	/**
@@ -134,7 +162,7 @@ while(runProgram = true){
 	public static int [][] setUpRotors( int [] rotorIndices ) {
 
 		// TODO left to the student
-		
+
 		// Hint: Access the rotor ciphers contained in RotorConstants, 
 		// and convert them into integral form by calling convertRotor().
 
@@ -198,14 +226,14 @@ while(runProgram = true){
 	 */
 	public static int [] convertRotor( String rotorText ) {
 		int length = rotorText.length();//declares length as a local variable
-		int []convertRotor = new int [length];//sets array length of convertRotor
+		int[] convertRotor = new int [length];//sets array length of convertRotor
 		for (int i=0; i<length; i++){
 			char temp = rotorText.charAt(i);// sets temp to char at i
 			convertRotor[i] = (int)temp-(int)'A';// sets index(i) of convert Rotor
 			//to ASCII value of temp minus ASCII value of 'A'
-	
-}
-	return convertRotor;
+
+		}
+		return convertRotor;
 	}
 
 	/**
@@ -253,16 +281,16 @@ while(runProgram = true){
 
 		//Converts char to numerical value
 		int index = (int)input-(int)'A';
-		
+
 		int numRotors = rotors.length;
 		//Runs through rotor(s) forwards
 		for (int i=0; i<numRotors; i++){
 			index = rotors[i][index];
 		}
-		
+
 		//Runs through reflector
 		index = reflector[index];
-		
+
 		//Runs through rotor(s) backwards
 		for (int i=numRotors; i>0; i--){
 			for (int j=0; j<rotors[i].length; j++){
@@ -270,7 +298,7 @@ while(runProgram = true){
 					index = j;
 				}
 			}
-				
+
 		}
 		return (char)(index + (int)'A');
 
@@ -296,7 +324,7 @@ while(runProgram = true){
 	 * <p>Advancement halts when a <tt>rotorOffset</tt> is updated and
 	 * it does not reach a notch for that rotor.</p>
 	 * 
- 	 * Note: The reflector never advances, it always stays stationary.
+	 * Note: The reflector never advances, it always stays stationary.
 	 *
 	 * @param rotors The array of rotor ciphers in their current configuration.
 	 *         The rotor at index 0 is the first rotor to be considered for
