@@ -1,21 +1,18 @@
-package enigma;
-
-//This is a test comment
-//TODO: put your file header here
+// TODO: put your file header here
 
 import java.util.*;
 
 /**
-* Simulate the encryption of messages that was performed by the 
-* World War II-era German Enigma cipher machine.
-* 
-* <ul><li><a href="http://en.wikipedia.org/wiki/Enigma_machine" target="wiki">
-* http://en.wikipedia.org/wiki/Enigma_machine</a></li>
-* <li><a href="https://www.youtube.com/watch?v=G2_Q9FoD-oQ" target="youtube">
-* https://www.youtube.com/watch?v=G2_Q9FoD-oQ</a></li>
-* </ul>
-*/
-public class enigma {
+ * Simulate the encryption of messages that was performed by the 
+ * World War II-era German Enigma cipher machine.
+ * 
+ * <ul><li><a href="http://en.wikipedia.org/wiki/Enigma_machine" target="wiki">
+ * http://en.wikipedia.org/wiki/Enigma_machine</a></li>
+ * <li><a href="https://www.youtube.com/watch?v=G2_Q9FoD-oQ" target="youtube">
+ * https://www.youtube.com/watch?v=G2_Q9FoD-oQ</a></li>
+ * </ul>
+ */
+public class Enigma {
 
 	// CAUTION: YOU MAY NOT DECLARE STATIC FIELDS IN class Enigma
 	// All values must be passed (as described) to and from methods 
@@ -33,20 +30,7 @@ public class enigma {
 	public static void main( String [] args ) {
 
 		// TODO left to the student
-System.out.println("Willkommen auf der Enigma-Maschine");//Welcome Message
-System.out.println("Please enter a Rotor Configuration." + //Rotor config
-"\nThis must be a list of numbers in the range from 0 to 8, separated by spaces."+
-"\nNote that rotor 0 is the identity rotor");
 
-System.out.println("Enter lines of text to be encoded:");
-Scanner input = new Scanner(System.in);
-boolean runProgram = true;
-//main loop
-while (runProgram = true){
-final String message = input.nextLine();
-System.out.println("Encoded results:"+message.toUpperCase());
-System.out.println(convertRotor(message));
-}
 		/* 
 		 * Hint: This is where you should put your welcome messages, 
 		 * the configuration prompt, and most importantly, 
@@ -199,16 +183,10 @@ System.out.println(convertRotor(message));
 	 *        integer index value of each character.
 	 */
 	public static int [] convertRotor( String rotorText ) {
-		//changes String rotorText to char array 
-		int length = rotorText.length();
-		char [] array = rotorText.toCharArray();
-		int [] convertRotor = new int [length];
-		for(int i=0; i<length; i++){
-		convertRotor[i] = array[i];
-		}
-		
+
 		// TODO left to the student
-		return convertRotor;
+
+		return null;
 	}
 
 	/**
@@ -280,7 +258,7 @@ System.out.println(convertRotor(message));
 	 * <p>Advancement halts when a <tt>rotorOffset</tt> is updated and
 	 * it does not reach a notch for that rotor.</p>
 	 * 
-	 * Note: The reflector never advances, it always stays stationary.
+ 	 * Note: The reflector never advances, it always stays stationary.
 	 *
 	 * @param rotors The array of rotor ciphers in their current configuration.
 	 *         The rotor at index 0 is the first rotor to be considered for
@@ -320,5 +298,4 @@ System.out.println(convertRotor(message));
 
 	}
 
-} // end of enigma class
-
+} // end of Enigma class
