@@ -132,13 +132,19 @@ while(runProgram = true){
 	 *         copied from {@code RotorConstants.ROTORS}.
 	 */
 	public static int [][] setUpRotors( int [] rotorIndices ) {
+		int length = rotorIndices.length-1;
 
-		// TODO left to the student
-		
+		int [][] rotors = new int [length][];
+
+		for(int i =0; i< length; i++){
+			int[] temp = new int[RotorConstants.ROTOR_LENGTH];
+			System.arraycopy(convertRotor(RotorConstants.ROTORS[rotorIndices[i]]), 0, temp, 0, temp.length);
+			System.arraycopy(temp, 0, rotors, i, temp.length);
+		}
 		// Hint: Access the rotor ciphers contained in RotorConstants, 
 		// and convert them into integral form by calling convertRotor().
 
-		return null;
+		return rotors;
 	}
 
 	/**
