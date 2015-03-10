@@ -1,6 +1,6 @@
 package enigma;
 
-//TEST
+//This is a test comment
 //TODO: put your file header here
 
 import java.util.*;
