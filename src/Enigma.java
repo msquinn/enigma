@@ -38,6 +38,20 @@ public class Enigma {
 		 * This is also the place where you should declare and use 
 		 * the "Suggested Data Structures" from the P2 Specifications Page.
 		 */
+boolean runProgram = true;		
+System.out.println("Willkommen auf der Enigma-Maschine");
+Scanner input = new Scanner(System.in);
+System.out.println("Please enter a Rotor Configuration."+
+		"\nThis must be a list of numbers in the range from 0 to 8, separated by spaces."+
+		"\nNote that rotor 0 is the identity rotor.");
+System.out.println("Enter lines of text to be encoded:");
+System.out.println("Contents of reflector"+ 
+Arrays.toString(convertRotor(RotorConstants.REFLECTOR)));
+while(runProgram = true){
+
+	String message = input.nextLine().toUpperCase();
+	System.out.println("Encoded result: "+message);
+}
 
 
 		/* 
@@ -183,10 +197,15 @@ public class Enigma {
 	 *        integer index value of each character.
 	 */
 	public static int [] convertRotor( String rotorText ) {
-
-		// TODO left to the student
-
-		return null;
+		int length = rotorText.length();//declares length as a local variable
+		int []convertRotor = new int [length];//sets array length of convertRotor
+		for (int i=0; i<length; i++){
+			char temp = rotorText.charAt(i);// sets temp to char at i
+			convertRotor[i] = (int)temp-(int)'A';// sets index(i) of convert Rotor
+			//to ASCII value of temp minus ASCII value of 'A'
+	
+}
+	return convertRotor;
 	}
 
 	/**
