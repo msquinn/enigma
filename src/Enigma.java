@@ -39,19 +39,39 @@ public class Enigma {
 		 * the "Suggested Data Structures" from the P2 Specifications Page.
 		 */
 		boolean runProgram = true;		
-		System.out.println("Willkommen auf der Enigma-Maschine");
+		System.out.println("Willkommen auf der Enigma-Maschine\n");
 		Scanner input = new Scanner(System.in);
 		System.out.println("Please enter a Rotor Configuration."+
-				"\nThis must be a list of numbers in the range from 0 to 8, separated by spaces."+
+				"\nThis must be a list of numbers in the range from 0 to 8, "
+				+ "separated by spaces."+
 				"\nNote that rotor 0 is the identity rotor.");
+		String userRotorConfig = input.nextLine();//user declares rotors to use
+		int[] rotorOffsets = new int [parseRotorIndices(userRotorConfig)
+		                              .length];
+		int [][]rotorUltimate = setUpRotors(parseRotorIndices
+				(userRotorConfig));
 		System.out.println("Enter lines of text to be encoded:");
-		System.out.println("Contents of reflector"+ 
-				Arrays.toString(convertRotor(RotorConstants.REFLECTOR)));
+
 		while(runProgram = true){
 
 			String message = input.nextLine().toUpperCase();
-			System.out.println("Encoded result: "+message);
-		}
+			System.out.print("Encoded result: ");
+			for (int i = 0;i<message.length();i++){
+				if((message.charAt(i)-'A'>=0)&&(message.charAt(i)-'A')<26){
+			
+			System.out.print(encode(rotorUltimate,convertRotor
+					(RotorConstants.REFLECTOR),message.charAt(i)));
+				advance(rotorUltimate, rotorOffsets,getRotorNotches
+						(parseRotorIndices(userRotorConfig)));
+				
+				}
+				else{
+					System.out.print(message.charAt(i));
+				}
+			}
+		System.out.println("");
+			}
+		
 
 
 		/* 
@@ -160,13 +180,29 @@ public class Enigma {
 	 *         copied from {@code RotorConstants.ROTORS}.
 	 */
 	public static int [][] setUpRotors( int [] rotorIndices ) {
+		int [][] rotors = new int [rotorIndices.length]
+				[RotorConstants.ROTOR_LENGTH];
+
+
+        for( int i = 0; i < rotorIndices.length ; i++)
+        {
+            //System.out.print("Rotor at index " + i + ":\t");  
+        	//CHECK FORMATTING HERE SPACES AREN'T RIGHT
+            for(int j = 0; j < RotorConstants.ROTOR_LENGTH ; j++)
+            {
+                rotors[i][j] = convertRotor(RotorConstants.ROTORS
+                		[rotorIndices[i]])[j];
+
+            }
+
+        }
 
 		// TODO left to the student
 
 		// Hint: Access the rotor ciphers contained in RotorConstants, 
 		// and convert them into integral form by calling convertRotor().
 
-		return null;
+		return rotors;
 	}
 
 	/**
@@ -199,8 +235,10 @@ public class Enigma {
 		int[][] rotorTemp = new int[rotorIndices.length][];
 		
 		for(int i=0; i<rotorIndices.length; i++){
-			rotorTemp[i] = new int[RotorConstants.NOTCHES[rotorIndices[i]].length]; 
-			for(int j=0; j<RotorConstants.NOTCHES[rotorIndices[i]].length; j++){
+			rotorTemp[i] = new int[RotorConstants.NOTCHES
+			                       [rotorIndices[i]].length]; 
+			for(int j=0; j<RotorConstants.NOTCHES[rotorIndices[i]].length; j++)
+			{
 				rotorTemp[i][j] = RotorConstants.NOTCHES[rotorIndices[i]][j];
 			}
 		}
@@ -231,11 +269,15 @@ public class Enigma {
 	 *        integer index value of each character.
 	 */
 	public static int [] convertRotor( String rotorText ) {
-		int length = rotorText.length();//declares length as a local variable
-		int[] convertRotor = new int [length];//sets array length of convertRotor
+		int length = rotorText.length();
+		//declares length as a local variable
+		int[] convertRotor = new int [length];
+		//sets array length of convertRotor
 		for (int i=0; i<length; i++){
-			char temp = rotorText.charAt(i);// sets temp to char at i
-			convertRotor[i] = (int)temp-(int)'A';// sets index(i) of convert Rotor
+			char temp = rotorText.charAt(i);
+			// sets temp to char at i
+			convertRotor[i] = (int)temp-(int)'A';
+			// sets index(i) of convert Rotor
 			//to ASCII value of temp minus ASCII value of 'A'
 
 		}
@@ -283,7 +325,7 @@ public class Enigma {
 	 * @return The result of encoding the input character. ALL encoded 
 	 *         characters are upper-case.
 	 */
-	public static char encode( int [][] rotors, int [] reflector, char input ) {
+	public static char encode( int [][] rotors, int [] reflector, char input ){
 
 		//Converts char to numerical value
 		int index = (int)input-(int)'A';
@@ -297,14 +339,15 @@ public class Enigma {
 		//Runs through reflector
 		index = reflector[index];
 
+		int [] tempArray = convertRotor(RotorConstants.ROTORS[0]);
 		//Runs through rotor(s) backwards
-		for (int i=numRotors; i>0; i--){
-			for (int j=0; j<rotors[i].length; j++){
-				if (index==rotors[i][j]){
-					index = j;
+		for (int i=rotors.length-1; i>=0; i--){
+			int count=0;
+				while (rotors[i][count] != tempArray[index]){
+					count++;
 				}
-			}
-
+				index = tempArray[count];
+				
 		}
 		return (char)(index + (int)'A');
 
@@ -324,7 +367,8 @@ public class Enigma {
 	 *     <li>And have its rotorOffset updated.</li>
 	 *     <li>And if a notch is reached, the next rotor is advanced.</li>
 	 *     </ol>
-	 * <li>Otherwise, notch was not reached, so no further rotors are advanced.</li>
+	 * <li>Otherwise, notch was not reached, so no further rotors are advanced.
+	 * </li>
 	 * </ol>
 	 *
 	 * <p>Advancement halts when a <tt>rotorOffset</tt> is updated and
@@ -357,9 +401,19 @@ public class Enigma {
 	 *        position does the next rotor in the chain advance.
 	 */
 	public static void advance( int [][] rotors, int [] rotorOffsets,
-			int [][] rotorNotches)
-	{
-		// TODO left to the student
+			int [][] rotorNotches){
+		boolean run = true;
+		while(run){
+			for (int i = 0; i<rotors.length; i++){
+				rotate(rotors[i]);
+			
+			if (rotors[i]=getRotorNotches[i]){
+				
+			}
+			}
+		}
+			
+		
 
 		/*
 		 * Hint: call rotate() to rotate a rotor. 
